@@ -1,0 +1,79 @@
+name: Build & Deploy PRODUCTION Server
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.ECR_AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        run: |
+          export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          export PROD_IMAGE_RELEASE=${{ secrets.ECR_REGISTRY }}:prod-$PACKAGE_VERSION
+          export PROD_IMAGE_VERSION=${{ secrets.ECR_REGISTRY }}:prod-latest
+          docker build -t $PROD_IMAGE_RELEASE -t $PROD_IMAGE_VERSION .
+          docker push $PROD_IMAGE_RELEASE
+          docker push $PROD_IMAGE_VERSION
+          docker rmi $PROD_IMAGE_RELEASE $PROD_IMAGE_VERSION
+                
+      # - name: Notify Google Chat
+      #   if: ${{ always() }}
+      #   uses: SimonScholz/google-chat-action@main
+      #   with:
+      #     webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+      #     jobStatus: '${{ job.status }}'
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deployment
+        uses: appleboy/ssh-action@master
+        env:
+          FOO: 'BAR'
+        with:
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: 'ubuntu'
+          key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          port: '22'
+          envs: FOO
+          script: |
+            echo "Inside Server"
+            cd /home/ubuntu/dad-labs-prod/primary-server
+            echo "Folder change completed, running deployment script..."
+            ./deploy-script.sh
+            echo "Deployment script completed"
+      
+      # - name: Notify Google Chat
+      #   if: ${{ always() }}
+      #   uses: SimonScholz/google-chat-action@main
+      #   with:
+      #     webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+      #     jobStatus: '${{ job.status }}'

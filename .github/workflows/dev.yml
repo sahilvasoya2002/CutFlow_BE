@@ -1,0 +1,77 @@
+name: Build & Deploy DEV Server
+
+on:
+  push:
+    branches: [ dev, feat/patient-mobileNumber ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.17.0'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.ECR_AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_CONTAINER_IMAGE: ${{ secrets.ECR_REGISTRY }}:dev
+        run: |
+          docker build -t $ECR_CONTAINER_IMAGE .
+          docker push $ECR_CONTAINER_IMAGE
+          docker rmi $ECR_CONTAINER_IMAGE
+
+      # - name: Notify Google Chat
+      #   if: ${{ always() }}
+      #   uses: SimonScholz/google-chat-action@main
+      #   with:
+      #     webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+      #     jobStatus: '${{ job.status }}'
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deployment
+        uses: appleboy/ssh-action@master
+        env:
+          FOO: 'BAR'
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: 'ubuntu'
+          key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
+          port: '22'
+          envs: FOO
+          script: |
+            echo "Inside Server"
+            cd /home/ubuntu/dad-labs-dev/primary-server
+            echo "Folder change completed, running deployment script..."
+            ./deploy-script.sh
+            echo "Deployment script completed"
+
+      # - name: Notify Google Chat
+      #   if: ${{ always() }}
+      #   uses: SimonScholz/google-chat-action@main
+      #   with:
+      #     webhookUrl: '${{ secrets.GOOGLE_CHAT_WEBHOOK_URL }}'
+      #     jobStatus: '${{ job.status }}'

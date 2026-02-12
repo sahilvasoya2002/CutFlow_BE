@@ -1,0 +1,97 @@
+{
+  "name": "smart-saloon-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/",
+    "lint": "esw --ext .json,.js,.gql,.graphql src --color",
+    "lint:watch": "npm run lint -- --watch",
+    "lint:fix": "eslint src --ext .json,.js,.gql,.graphql --fix",
+    "precommit": "npm run lint",
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "4.11.0",
+    "@aws-sdk/client-sesv2": "^3.649.0",
+    "@google-cloud/storage": "7.12.1",
+    "@graphql-tools/load-files": "7.0.0",
+    "@graphql-tools/merge": "9.0.7",
+    "@graphql-tools/schema": "10.0.6",
+    "@graphql-tools/utils": "10.5.4",
+    "@sentry/node": "7.37.0",
+    "@sentry/tracing": "7.114.0",
+    "aws-sdk": "2.1691.0",
+    "axios": "1.7.7",
+    "bcryptjs": "3.0.3",
+    "cors": "2.8.5",
+    "crypto": "^1.0.1",
+    "csv-parser": "3.0.0",
+    "dotenv": "16.4.5",
+    "escape-string-regexp": "4.0.0",
+    "express": "4.17.2",
+    "graphql": "16.9.0",
+    "graphql-constraint-directive": "5.4.3",
+    "graphql-log": "0.1.3",
+    "graphql-middleware": "6.1.35",
+    "graphql-query-complexity": "1.0.0",
+    "graphql-scalars": "1.23.0",
+    "graphql-ws": "5.16.0",
+    "handlebars": "4.7.7",
+    "jsonwebtoken": "^9.0.2",
+    "jspdf": "2.5.1",
+    "jspdf-autotable": "3.5.28",
+    "lodash": "4.17.21",
+    "mime": "3.0.0",
+    "moment": "2.30.1",
+    "mongoose": "8.6.1",
+    "node-cron": "3.0.3",
+    "node-fetch": "2.6.9",
+    "nodemailer": "6.9.5",
+    "openai": "^4.67.3",
+    "pdf-lib": "1.17.1",
+    "pdf-merger-js": "5.1.2",
+    "phone": "3.1.32",
+    "to-words": "4.1.0",
+    "uuid": "9.0.0",
+    "winston": "3.8.2",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@graphql-eslint/eslint-plugin": "3.15.0",
+    "eslint": "7.18.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-plugin-eslint-plugin": "5.0.8",
+    "eslint-plugin-filenames-simple": "0.9.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-json": "2.1.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-security": "1.7.1",
+    "eslint-watch": "7.0.0",
+    "husky": "8.0.3",
+    "lint-staged": "13.1.1",
+    "nodemon": "3.1.4"
+  },
+  "engines": {
+    "node": "20.17.0",
+    "npm": "10.8.2"
+  },
+  "engineStrict": true,
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm run lint",
+      "pre-push": "lint-staged && npm run lint"
+    }
+  }
+}

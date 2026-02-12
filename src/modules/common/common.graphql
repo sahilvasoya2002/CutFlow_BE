@@ -1,0 +1,129 @@
+directive @isUserAuthenticatedManagementAccess on FIELD_DEFINITION
+scalar Date
+
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum DAY {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum DiscountKind {
+  PERCENTAGE
+  FLAT
+}
+
+type User {
+  id: ID
+  firstName: String
+  lastName: String
+  email: String
+  countryCode: String
+  phoneNumber: String
+  age: Int
+  password: String
+  avtar: String
+  emailVerified: Boolean
+  isDisabled: Boolean
+  isDeleted: Boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Branch {
+  id: ID
+  name: String
+  address: String
+  openingTime: String
+  closingTime: String
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Shop {
+  id: ID
+  name: String
+  logo: String
+  createdAt: Date
+  updatedAt: Date
+  branches: [Branch]
+}
+
+type familyMembers {
+  id: ID
+  name: String
+  age: Int
+  countryCode: String
+  phoneNumber: String
+  sex: Sex
+  address: String
+  dueAmount: Float
+}
+
+type Customer {
+  id: ID
+  name: String
+  age: Int
+  countryCode: String
+  phoneNumber: String
+  sex: Sex
+  address: String
+  dueAmount: Float
+  bookNumber: String
+  bookId: String
+  isDeleted: Boolean
+  isDisabled: Boolean
+  shopId: String
+  branchId: String
+  familyMembers: [familyMembers]
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Book {
+  id: ID
+  bookNumber: String
+  dueAmount: Float
+  shopId: String
+  branchId: String
+  customers: [familyMembers]
+  isDeleted: Boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Appointment {
+  id: ID
+  amount: Float
+  discountKind: DiscountKind
+  discount: Float
+  totalAmount: Float
+  customerId: String
+  shopId: String
+  branchId: String
+  appointmentAt: Date
+  userId: String
+  note: String
+  isBranchDeleted: Boolean
+  isDeleted: Boolean
+  paymentStatus: String
+  paymentVia: String
+  status: String
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Query {
+  checkGraphQLStatus: String
+  helloWorld: String
+}

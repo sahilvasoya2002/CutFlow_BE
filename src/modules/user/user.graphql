@@ -1,0 +1,197 @@
+directive @isUserAuthenticatedManagementAccess on FIELD_DEFINITION
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum DAY {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum DiscountKind {
+  PERCENTAGE
+  FLAT
+}
+
+input SignupUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  countryCode: String!
+  phoneNumber: String!
+  age: Int!
+  sex: Sex!
+  password: String!
+}
+
+type SignUpUserResponse {
+  user: User
+  isSignup: Boolean
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type loginResponse {
+  user: User
+  token: String
+}
+
+input BranchInput {
+  name: String
+  address: String
+  openingTime: String
+  closingTime: String
+}
+
+
+input CreateShopInput {
+  name: String
+  logo: String
+  branches: [BranchInput]
+}
+
+input UpdateShopInput {
+  name: String
+  logo: String
+  shopId: String
+}
+
+input CreateCustomerInput {
+  name: String
+  age: Int
+  countryCode: String
+  phoneNumber: String
+  sex: Sex
+  address: String
+  bookNumber: String
+  bookId: String
+  shopId: String
+  branchId: String
+}
+
+input UpdateBranchInput {
+  branchId: String!
+  name: String
+  address: String
+  openingTime: String
+  closingTime: String
+}
+
+input UpdateCustomerInput {
+  customerId: String!
+  name: String
+  age: Int
+  countryCode: String
+  phoneNumber: String
+  sex: Sex
+  address: String
+}
+
+type BranchResponse {
+  branch: Branch
+}
+
+type CustomerResponse {
+  customer: Customer
+}
+
+type ShopResponse {
+  shop: Shop
+}
+
+input GetBranchesInput {
+  shopId: String!
+  limit: Int
+  offset: Int
+  search: String
+}
+
+type GetBranchesResponse {
+  branches: [Branch]
+  totalCount: Int
+}
+
+input GetCustomersInput {
+  shopId: String
+  branchId: String
+  limit: Int
+  offset: Int
+  search: String
+}
+
+type GetCustomersResponse {
+  customers: [Customer]
+  totalCount: Int
+}
+
+input GetBooksInput {
+  shopId: String
+  limit: Int
+  offset: Int
+  search: String
+}
+
+type GetBooksResponse {
+  books: [Book]
+  totalCount: Int
+}
+
+input CreateAppointmentInput {
+  customerIds: [String!]!
+  shopId: String!
+  branchId: String!
+}
+
+type createAppointmentResponse {
+  appointmentCreated: Boolean
+}
+
+input GetAppointmentsInput {
+  shopId: String
+  branchId: String
+  startDate: Date
+  endDate: Date
+  status: String
+  limit: Int
+  offset: Int
+}
+
+type GetAppointmentsResponse {
+  appointments: [Appointment]
+  totalCount: Int
+}
+
+type Query {
+  checkGraphQLStatus: String
+  helloWorld: String
+  getBranchWithId(branchId: String!): BranchResponse @isUserAuthenticatedManagementAccess
+  getShopWithId(shopId: String!): ShopResponse @isUserAuthenticatedManagementAccess
+  getCustomerWithId(customerId: String!): CustomerResponse @isUserAuthenticatedManagementAccess
+  getBranches(data: GetBranchesInput!): GetBranchesResponse @isUserAuthenticatedManagementAccess
+  getCustomers(data: GetCustomersInput!): GetCustomersResponse @isUserAuthenticatedManagementAccess
+  getBooks(data: GetBooksInput!): GetBooksResponse @isUserAuthenticatedManagementAccess
+  getAppointments(data: GetAppointmentsInput!): GetAppointmentsResponse @isUserAuthenticatedManagementAccess
+}
+
+type Mutation {
+  signupUser(data: SignupUserInput!): SignUpUserResponse
+  login(data: LoginInput!): loginResponse
+  createShop(data: CreateShopInput!): ShopResponse @isUserAuthenticatedManagementAccess
+  updateShop(data: UpdateShopInput!): ShopResponse @isUserAuthenticatedManagementAccess
+  createCustomer(data: CreateCustomerInput!): CustomerResponse @isUserAuthenticatedManagementAccess
+  removeCustomer(customerId: String!): Boolean @isUserAuthenticatedManagementAccess
+  updateBranch(data: UpdateBranchInput!): BranchResponse @isUserAuthenticatedManagementAccess
+  updateCustomer(data: UpdateCustomerInput!): CustomerResponse @isUserAuthenticatedManagementAccess
+  createAppointment(data: CreateAppointmentInput!): createAppointmentResponse @isUserAuthenticatedManagementAccess
+}
