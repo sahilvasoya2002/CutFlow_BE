@@ -25,6 +25,7 @@ const {
   getAppointments,
   getTransactions,
   getTransactionWithId,
+  getDashboardData,
 } = require('./query');
 
 const resolver = {
@@ -39,6 +40,7 @@ const resolver = {
     getAppointments,
     getTransactions,
     getTransactionWithId,
+    getDashboardData,
   },
   Mutation: {
     signupUser,

@@ -218,6 +218,28 @@ input ClearCustomerDueAmountInput {
   branchId: String
 }
 
+input GetDashboardDataInput {
+  shopId: String
+  branchId: String
+  startDate: Date
+  endDate: Date
+}
+
+type DashboardDataResponse {
+  totalPatients: Int
+  totalAppointments: Int
+  totalRevenue: Float
+  totalDueRevenue: Float
+  totalCashRevenue: Float
+  totalUpiRevenue: Float
+  totalAppointmentAmount: Float
+  overallDueAmount: Float
+  totalClearedDueAmount: Float
+  totalClearedDueCashAmount: Float
+  totalClearedDueUpiAmount: Float
+  totalClearedDueRevenue: Float
+}
+
 type Query {
   checkGraphQLStatus: String
   helloWorld: String
@@ -230,6 +252,7 @@ type Query {
   getAppointments(data: GetAppointmentsInput!): GetAppointmentsResponse @isUserAuthenticatedManagementAccess
   getTransactions(data: GetTransactionsInput!): GetTransactionsResponse @isUserAuthenticatedManagementAccess
   getTransactionWithId(transactionId: String!): TransactionResponse @isUserAuthenticatedManagementAccess
+  getDashboardData(data: GetDashboardDataInput!): DashboardDataResponse @isUserAuthenticatedManagementAccess
 }
 
 type Mutation {

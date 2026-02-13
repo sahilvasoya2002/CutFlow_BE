@@ -65,21 +65,18 @@ const makeAppointmentPayment = async (_, { data }, ctx) => {
 
     let dueAmount = 0;
     let transactionTitle;
-    let isPaymentDue = false;
 
     // 🔹 Payment Logic
     if (isAmountPaid) {
       if (paidAmount < amount) {
         dueAmount = amount - paidAmount;
         transactionTitle = TRANSACTION_TITLE.PARTIALLY;
-        isPaymentDue = true;
       } else {
         transactionTitle = TRANSACTION_TITLE.PAID;
       }
     } else {
       dueAmount = amount;
       transactionTitle = TRANSACTION_TITLE.NOT_PAID;
-      isPaymentDue = true;
     }
 
     // 🔹 Update Due if exists
@@ -107,7 +104,7 @@ const makeAppointmentPayment = async (_, { data }, ctx) => {
       shopId,
       appointmentAt,
       appointmentId,
-      isDuePayment: isPaymentDue,
+      isDuePayment: false,
       customerName,
       paymentVia: isAmountPaid ? paymentVia : 'PENDING',
       title: transactionTitle,
@@ -120,10 +117,9 @@ const makeAppointmentPayment = async (_, { data }, ctx) => {
       appointmentAmount,
       paymentVia,
       status: PAYMENT_STATUS.COMPLETED,
-      paymentStatus: isPaymentDue
+      paymentStatus: paidAmount < amount
         ? PAYMENT_STATUS.PARTIAL
         : PAYMENT_STATUS.PAID,
-      isPaymentDue,
       note: note || existingNote,
     });
 
