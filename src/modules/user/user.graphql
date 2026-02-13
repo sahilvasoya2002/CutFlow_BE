@@ -21,6 +21,14 @@ enum DiscountKind {
   FLAT
 }
 
+enum PaymentVia {
+  CASH
+  ONLINE
+  UPI
+  PENDING
+  BOTH
+}
+
 input SignupUserInput {
   firstName: String!
   lastName: String!
@@ -172,6 +180,37 @@ type GetAppointmentsResponse {
   totalCount: Int
 }
 
+input MakeAppointmentPaymentInput {
+  appointmentId: String
+  amount: Float
+  cashAmount: Float
+  upiAmount: Float
+  isAmountPaid: Boolean
+  appointmentAmount: Float
+  paymentVia: PaymentVia
+  note: String
+}
+
+input GetTransactionsInput {
+  shopId: String
+  branchId: String
+  customerId: String
+  transactionType: PaymentVia
+  startDate: Date
+  endDate: Date
+  limit: Int
+  offset: Int
+}
+
+type GetTransactionsResponse {
+  transactions: [Transaction]
+  totalCount: Int
+}
+
+type TransactionResponse {
+  transaction: Transaction
+}
+
 type Query {
   checkGraphQLStatus: String
   helloWorld: String
@@ -182,6 +221,8 @@ type Query {
   getCustomers(data: GetCustomersInput!): GetCustomersResponse @isUserAuthenticatedManagementAccess
   getBooks(data: GetBooksInput!): GetBooksResponse @isUserAuthenticatedManagementAccess
   getAppointments(data: GetAppointmentsInput!): GetAppointmentsResponse @isUserAuthenticatedManagementAccess
+  getTransactions(data: GetTransactionsInput!): GetTransactionsResponse @isUserAuthenticatedManagementAccess
+  getTransactionWithId(transactionId: String!): TransactionResponse @isUserAuthenticatedManagementAccess
 }
 
 type Mutation {
@@ -194,4 +235,5 @@ type Mutation {
   updateBranch(data: UpdateBranchInput!): BranchResponse @isUserAuthenticatedManagementAccess
   updateCustomer(data: UpdateCustomerInput!): CustomerResponse @isUserAuthenticatedManagementAccess
   createAppointment(data: CreateAppointmentInput!): createAppointmentResponse @isUserAuthenticatedManagementAccess
+  makeAppointmentPayment(data:MakeAppointmentPaymentInput!): Boolean @isUserAuthenticatedManagementAccess
 }

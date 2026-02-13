@@ -10,7 +10,6 @@ const getAppointments = async (_, { data }, ctx) => {
       shopId, startDate, endDate, limit, offset, branchId, status,
     } = data;
 
-    
     const { appointments, totalCount } = await fetchAppointments({
       shopId, startDate, endDate, limit, offset, branchId, status, ctx,
     });

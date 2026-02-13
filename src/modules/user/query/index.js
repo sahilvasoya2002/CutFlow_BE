@@ -5,6 +5,8 @@ const getBranches = require('./get-branches');
 const getCustomerWithId = require('./get-customer-by-id');
 const getCustomers = require('./get-customers');
 const getShopWithId = require('./get-shop-by-id');
+const getTransactionWithId = require('./get-transaction-by-id');
+const getTransactions = require('./get-transactions');
 
 module.exports = {
   getBranchWithId,
@@ -14,4 +16,6 @@ module.exports = {
   getCustomers,
   getBooks,
   getAppointments,
+  getTransactionWithId,
+  getTransactions,
 };

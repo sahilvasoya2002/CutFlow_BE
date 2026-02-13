@@ -80,8 +80,32 @@ const fetchAppointments = async ({
   }
 };
 
+const getAppointmentById = async (appointmentId, ctx) => {
+  try {
+    const { Appointment: AppointmentModel } = models;
+    const appointment = await AppointmentModel.findById(appointmentId);
+    return appointment;
+  } catch (error) {
+    defaultLogger(`Error from getAppointmentById > ${error}`, ctx, 'error');
+    throw error;
+  }
+};
+
+const updateAppointmentData = async (appointmentId, data, ctx) => {
+  try {
+    const { Appointment: AppointmentModel } = models;
+    const appointment = await AppointmentModel.findByIdAndUpdate(appointmentId, data, { new: true });
+    return appointment;
+  } catch (error) {
+    defaultLogger(`Error from updateAppointmentData > ${error}`, ctx, 'error');
+    throw error;
+  }
+};
+
 module.exports = {
   addAppointment,
   checkIfCustomerAppointmentExistsForToday,
   fetchAppointments,
+  getAppointmentById,
+  updateAppointmentData,
 };

@@ -11,6 +11,7 @@ const {
   updateBranch,
   updateCustomer,
   createAppointment,
+  makeAppointmentPayment,
 } = require('./mutation');
 
 const {
@@ -21,6 +22,8 @@ const {
   getCustomers,
   getBooks,
   getAppointments,
+  getTransactions,
+  getTransactionWithId,
 } = require('./query');
 
 const resolver = {
@@ -33,6 +36,8 @@ const resolver = {
     getCustomers,
     getBooks,
     getAppointments,
+    getTransactions,
+    getTransactionWithId,
   },
   Mutation: {
     signupUser,
@@ -44,6 +49,7 @@ const resolver = {
     updateBranch,
     updateCustomer,
     createAppointment,
+    makeAppointmentPayment,
   },
   Shop: {
     branches: async parent => {

@@ -23,6 +23,14 @@ enum DiscountKind {
   FLAT
 }
 
+enum PaymentVia {
+  CASH
+  ONLINE
+  UPI
+  PENDING
+  BOTH
+}
+
 type User {
   id: ID
   firstName: String
@@ -122,6 +130,31 @@ type Appointment {
   createdAt: Date
   updatedAt: Date
 }
+
+type Transaction {
+  id: ID
+  paidAmount: Float
+  cashAmount: Float
+  upiAmount: Float
+  dueAmount: Float
+  amount: Float
+  bookId: String
+  shopId: String
+  appointmentAt: Date
+  appointmentId: String
+  isDuePayment: Boolean
+  customerId: String
+  customerName: String
+  branchId: String
+  paymentVia: PaymentVia
+  title: String
+  transactionId: String
+  isReverted: Boolean
+  isBranchDeleted: Boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
 
 type Query {
   checkGraphQLStatus: String

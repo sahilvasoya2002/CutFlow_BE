@@ -18,6 +18,10 @@ const messages = {
   CUSTOMER_NOT_FOUND: 'Customer not found',
   CANNOT_DELETE_CUSTOMER_WITH_DUE_AMOUNT: 'Cannot delete customer with due amount',
   BRANCH_NOT_FOUND: 'Branch not found',
+  APPOINTMENT_NOT_FOUND: 'Appointment not found',
+  BOOK_NOT_FOUND: 'Book not found',
+  INVALID_OTP: 'Invalid OTP',
+  TRANSACTION_NOT_FOUND: 'Transaction not found',
 };
 
 const getMessage = key => {
