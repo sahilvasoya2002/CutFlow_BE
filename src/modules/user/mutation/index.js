@@ -1,5 +1,6 @@
 const getBranchWithId = require('../query/get-branch-by-id');
 
+const clearDueCustomerAmount = require('./clear-customer-due-amount');
 const createCustomer = require('./create-customer');
 const createAppointment = require('./create-new-appointment');
 const createShop = require('./create-shop');
@@ -23,4 +24,5 @@ module.exports = {
   updateCustomer,
   createAppointment,
   makeAppointmentPayment,
+  clearDueCustomerAmount,
 };

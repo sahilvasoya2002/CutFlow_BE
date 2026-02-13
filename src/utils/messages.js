@@ -22,6 +22,7 @@ const messages = {
   BOOK_NOT_FOUND: 'Book not found',
   INVALID_OTP: 'Invalid OTP',
   TRANSACTION_NOT_FOUND: 'Transaction not found',
+  PAID_AMOUNT_EXCEEDS_DUE: 'Paid amount cannot be greater than due amount',
 };
 
 const getMessage = key => {

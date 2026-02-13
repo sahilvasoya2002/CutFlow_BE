@@ -23,7 +23,6 @@ enum DiscountKind {
 
 enum PaymentVia {
   CASH
-  ONLINE
   UPI
   PENDING
   BOTH
@@ -211,6 +210,14 @@ type TransactionResponse {
   transaction: Transaction
 }
 
+input ClearCustomerDueAmountInput {
+  customerId: String
+  upiAmount: Float
+  cashAmount: Float
+  paymentVia: PaymentVia
+  branchId: String
+}
+
 type Query {
   checkGraphQLStatus: String
   helloWorld: String
@@ -236,4 +243,5 @@ type Mutation {
   updateCustomer(data: UpdateCustomerInput!): CustomerResponse @isUserAuthenticatedManagementAccess
   createAppointment(data: CreateAppointmentInput!): createAppointmentResponse @isUserAuthenticatedManagementAccess
   makeAppointmentPayment(data:MakeAppointmentPaymentInput!): Boolean @isUserAuthenticatedManagementAccess
+  clearDueCustomerAmount(data:ClearCustomerDueAmountInput!): Boolean @isUserAuthenticatedManagementAccess
 }

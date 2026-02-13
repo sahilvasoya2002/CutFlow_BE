@@ -12,6 +12,7 @@ const {
   updateCustomer,
   createAppointment,
   makeAppointmentPayment,
+  clearDueCustomerAmount,
 } = require('./mutation');
 
 const {
@@ -50,6 +51,7 @@ const resolver = {
     updateCustomer,
     createAppointment,
     makeAppointmentPayment,
+    clearDueCustomerAmount,
   },
   Shop: {
     branches: async parent => {
